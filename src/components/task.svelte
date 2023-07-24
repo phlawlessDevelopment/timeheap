@@ -3,15 +3,32 @@
 	export let id;
 	export let name;
 	export let priority;
+	export let weight;
+	export let dueDate;
+	export let hoursPerWeek;
 	const dispatch = createEventDispatcher();
+
+	const dateOptions = {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	};
 </script>
 
 <button
-	class="card card-hover variant-ghost text-center bg-gradient-to-br variant-gradient-primary-secondary"
+	class="card card-hover variant-ghost text-center flex flex-col items-center bg-gradient-to-br variant-gradient-primary-secondary"
 	on:click={() => dispatch('card-click', id)}
 >
-	<header class="card-header">{name}</header>
-	<section class="p-4">(content)</section>
+	<header class="card-header font-bold text-2xl">{name}</header>
+	<section class="p-4 flex flex-col gap-2">
+		<div>Weight: {weight}</div>
+		{#if dueDate}
+			<div>{dueDate.toLocaleString(undefined, dateOptions)}</div>
+		{/if}
+		{#if hoursPerWeek}
+			<div>{hoursPerWeek} hours per week</div>
+		{/if}
+	</section>
 	<footer class="card-footer flex gap-2 items-center">
 		<button type="button" class="btn-icon variant-ghost">
 			<svg
