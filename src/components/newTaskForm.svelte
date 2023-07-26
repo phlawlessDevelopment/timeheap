@@ -1,9 +1,12 @@
 <script>
 	import { modalStore } from '@skeletonlabs/skeleton';
+	import { createEventDispatcher } from 'svelte';
+
 	let name;
 	let dueDate;
 	let hoursPerWeek;
 	let errors = [];
+	let dispatch = createEventDispatcher();
 
 	function validate() {
 		if (!name) {
@@ -21,8 +24,8 @@
 	function createTask() {
 		errors = [];
 		validate();
-		console.log(errors);
 		if (errors.length > 0) return;
+		dispatch('new-task', { name, dueDate, hoursPerWeek });
 		modalStore.close();
 		errors = [];
 	}

@@ -39,7 +39,9 @@
 			});
 		}
 	}
-
+	function handleNewTask(e) {
+		schedule.push({ hoursThisWeek: 0, priority: 0, weight: 1, ...e.detail });
+	}
 	function openModal(id_) {
 		const { id, name, priority } = schedule.find(id_);
 		console.log(id, name, priority);
@@ -61,7 +63,7 @@
 	let showHeap = false;
 </script>
 
-<Modal />
+<Modal on:new-task={handleNewTask} />
 <div class="flex justify-center pb-8">
 	<Task
 		on:card-click={(e) => openModal(e.detail)}

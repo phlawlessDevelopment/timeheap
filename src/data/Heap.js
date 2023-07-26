@@ -87,11 +87,8 @@ export default class MaxHeap {
 
   daysLeftThisWeek() {
     const today = new Date();
-    const currentDay = today.getDay(); // Get the current day of the week (0 - Sunday, 1 - Monday, ..., 6 - Saturday)
-
-    // Calculate the number of days left until Sunday (6 - Saturday, 0 - Sunday)
+    const currentDay = today.getDay();
     const daysLeft = 6 - currentDay;
-
     return daysLeft;
   }
 
@@ -101,14 +98,28 @@ export default class MaxHeap {
     return daysInMonth;
   }
 
+  dateDiffToDays(diff){
+      return diff / (1000 * 60 * 60 * 24) | 0;
+  }
+
   calcPriority(t) {
     if (t.dueDate) {
-      console.log('dist', (t.dueDate - Date.now()) / (1000 * 60 * 60 * 24) | 0);
-      t.priority += t.weight * (this.daysThisMonth() - (t.dueDate - Date.now()) / (1000 * 60 * 60 * 24) | 0);
+      const remainingDays = this.dateDiffToDays(t.dueDate-Date.now());
+      if(remainingDays<5){
+        t.priority += 10 * 5-remainingDays;
+      }
     }
     if (t.hoursPerWeek > 0) {
-      t.priority += t.weight * ((7 - this.daysLeftThisWeek()) - (t.hoursPerWeek - t.hoursThisWeek));
+      const hoursRemaining = t.hoursPerWeek - t.hoursThisWeek;
+      const hoursPerDay = hoursRemaining / this.daysLeftThisWeek();
+      console.log(hoursRemaining, hoursPerDay)
+      if(hoursPerDay>1)
+        t.priority += 50 * hoursPerDay;
+      else
+        t.priortiy += 10 * hoursPerDay;
+      console.log()
     }
+    t.priority *= t.weight;
   }
 
 }
